@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
 
 import numpy as np
@@ -35,6 +36,7 @@ def run_montecarlo(
     equity_df: pd.DataFrame,
     config: ChallengeConfig,
     runs: int,
+    on_progress: Callable[[int], None] | None = None,
 ) -> MonteCarloResult:
     equity_vals = equity_df["equity"].to_numpy(dtype=float)
     returns = equity_vals[1:] / equity_vals[:-1]
@@ -53,7 +55,11 @@ def run_montecarlo(
     equity_paths[:, 0] = initial
     equity_paths[:, 1:] = initial * cum_prod
 
-    all_results = [evaluate_window(pd.Series(equity_paths[i]), config) for i in range(runs)]
+    all_results: list[SimResult] = []
+    for i in range(runs):
+        all_results.append(evaluate_window(pd.Series(equity_paths[i]), config))
+        if on_progress is not None and ((i + 1) % 500 == 0 or i == runs - 1):
+            on_progress(i + 1)
 
     passes = [r for r in all_results if r.status == "PASS"]
     fails = [r for r in all_results if r.status != "PASS"]
