@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 
 import pandas as pd
 
-from src.rules import ChallengeConfig, RuleResult
+from src.rules import ChallengeConfig, SimResult
 
 
 @dataclass
@@ -12,7 +12,7 @@ class MonteCarloResults:
     config: ChallengeConfig
     runs: int
     pass_rate: float
-    rule_results: list[RuleResult] = field(default_factory=list)
+    sim_results: list[SimResult] = field(default_factory=list)
     equity_paths: list[list[float]] = field(default_factory=list)
 
 
