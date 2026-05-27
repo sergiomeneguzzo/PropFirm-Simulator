@@ -1,8 +1,7 @@
 name: "Generic"
 account_size: 50000
-max_daily_loss_pct: 4.0
-max_total_loss_pct: 8.0
 profit_target_pct: 8.0
+max_drawdown_pct: 8.0
+daily_drawdown_pct: 4.0
 min_trading_days: 5
 max_trading_days: 60
-trailing_drawdown: false

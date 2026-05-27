@@ -1,31 +1,29 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 @dataclass
-class FirmConfig:
+class ChallengeConfig:
     name: str
     account_size: float
-    max_daily_loss_pct: float
-    max_total_loss_pct: float
     profit_target_pct: float
-    min_trading_days: int
+    max_drawdown_pct: float
+    daily_drawdown_pct: float
     max_trading_days: int
-    trailing_drawdown: bool = False
-    extra: dict = field(default_factory=dict)
-
-    @property
-    def max_daily_loss_abs(self) -> float:
-        return self.account_size * self.max_daily_loss_pct / 100
-
-    @property
-    def max_total_loss_abs(self) -> float:
-        return self.account_size * self.max_total_loss_pct / 100
+    min_trading_days: int = 0
 
     @property
     def profit_target_abs(self) -> float:
         return self.account_size * self.profit_target_pct / 100
+
+    @property
+    def max_drawdown_abs(self) -> float:
+        return self.account_size * self.max_drawdown_pct / 100
+
+    @property
+    def daily_drawdown_abs(self) -> float:
+        return self.account_size * self.daily_drawdown_pct / 100
 
 
 @dataclass
@@ -37,5 +35,5 @@ class RuleResult:
     trading_days: int
 
 
-def evaluate_rules(daily_pnl: list[float], config: FirmConfig) -> RuleResult:
+def evaluate_rules(daily_pnl: list[float], config: ChallengeConfig) -> RuleResult:
     ...

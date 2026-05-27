@@ -4,7 +4,7 @@ from pathlib import Path
 import click
 
 from src.engine import run_monte_carlo, run_historical
-from src.loader import load_config_yaml, load_equity_csv
+from src.loader import load_config, load_equity_csv
 from src.report import generate_report
 
 
@@ -51,8 +51,8 @@ def cli() -> None:
     help="Number of Monte Carlo simulation runs.",
 )
 def run(equity: Path, config: Path, out: Path, runs: int) -> None:
-    equity_data = load_equity_csv(equity)
-    firm_config = load_config_yaml(config)
+    equity_data = load_equity_csv(str(equity))
+    firm_config = load_config(str(config))
     results = run_monte_carlo(equity_data, firm_config, runs)
     generate_report(results, out)
     click.echo(f"Report written to {out}")
@@ -80,8 +80,8 @@ def run(equity: Path, config: Path, out: Path, runs: int) -> None:
     help="Output HTML report path.",
 )
 def history(equity: Path, config: Path, out: Path) -> None:
-    equity_data = load_equity_csv(equity)
-    firm_config = load_config_yaml(config)
+    equity_data = load_equity_csv(str(equity))
+    firm_config = load_config(str(config))
     results = run_historical(equity_data, firm_config)
     generate_report(results, out)
     click.echo(f"Report written to {out}")
