@@ -1,0 +1,8 @@
+name: "FTMO 200k"
+account_size: 200000
+max_daily_loss_pct: 5.0
+max_total_loss_pct: 10.0
+profit_target_pct: 10.0
+min_trading_days: 4
+max_trading_days: 30
+trailing_drawdown: false
